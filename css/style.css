@@ -9,10 +9,6 @@
     display: none;
 }
 
-img.active {
-    display: block;
-}
-
 .gallery i:hover {
     transform: scale(1.5);
 }
