@@ -49,6 +49,47 @@ for (let i = 0; i < images.length; i++) {
     imageContainer.appendChild(img);
 }
 
+var imgs = document.querySelectorAll('#image-container img');
+
+// Listener per il tasto "next"
+next.addEventListener('click', function () {
+
+    // Nascondo l'immagine attuale
+    imgs[currentIndex].classList.remove('d-block');
+    imgs[currentIndex].classList.add('d-none');
+
+    // Incremento l'indice
+    currentIndex++;
+
+    // Se l'indice supera il numero di immagini, lo resetto a 0
+    if (currentIndex >= images.length) {
+        currentIndex = 0;
+    }
+
+    // Mostro la nuova immagine
+    imgs[currentIndex].classList.remove('d-none');
+    imgs[currentIndex].classList.add('d-block');
+});
+
+// Listener per il tasto "prev"
+prev.addEventListener('click', function () {
+
+    // Nascondo l'immagine attuale
+    imgs[currentIndex].classList.remove('d-block');
+    imgs[currentIndex].classList.add('d-none');
+
+    // Decremento l'indice
+    currentIndex--;
+
+    // Se l'indice è inferiore a 0, lo resetto all'ultima immagine
+    if (currentIndex < 0) {
+        currentIndex = images.length - 1;
+    }
+
+    // Mostro la nuova immagine
+    imgs[currentIndex].classList.remove('d-none');
+    imgs[currentIndex].classList.add('d-block');
+});
 
 
 
