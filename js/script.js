@@ -9,11 +9,7 @@ Al click dell'utente sulle frecce, l'immagine attiva cambia e diventa visibile n
 BONUS 1:
 Aggiungere il ciclo infinito del carosello. Ovvero se l' immagine attiva è la prima e l'utente clicca la freccia per andare indietro, la miniatura che deve attivarsi sarà l'ultima e viceversa per l'ultima miniatura se l'utente clicca la freccia verso avanti, deve attivarsi la prima immgine.
 BONUS 2:
-Creiamo delle miniature di tutte le immagni, in cui dovrà apparire in evidenza l’immagine equivalente a quella attiva, scegliete liberamente se scurire le altre immagini oppure se evidenziarla semplicemente con un bordo. Tra queste miniature, quella corrispondente all'immagine attiva deve evidenziarsi, scegliete voi l'effetto estetico, potete colorarla diversamente rispetto alle altre o aggiungere un semplice bordo.
-Prima di partire a scrivere codice:
-Non lasciamoci spaventare dalla complessità apparente dell'esercizio, ma analizziamo prima, come abbiamo fatto sempre, cosa ci potrebbe aspettare. Abbiamo completato ormai da qualche settimana la sessione HTML e CSS, se non ci ricordiamo qualcosa andiamo pure a riguardare alcuni argomenti. Non dedichiamo però al ripasso più di una mezz'ora, così da non perdere di vista il focus dell'esercizio.
-Scriviamo sempre prima per punti il nostro algoritmo in italiano per capire cosa vogliamo fare
-Buon lavoro e buon divertimento! :faccia_leggermente_sorridente: */
+Creiamo delle miniature di tutte le immagni, in cui dovrà apparire in evidenza l’immagine equivalente a quella attiva, scegliete liberamente se scurire le altre immagini oppure se evidenziarla semplicemente con un bordo. Tra queste miniature, quella corrispondente all'immagine attiva deve evidenziarsi, scegliete voi l'effetto estetico, potete colorarla diversamente rispetto alle altre o aggiungere un semplice bordo. */
 
 
 
@@ -21,6 +17,7 @@ Buon lavoro e buon divertimento! :faccia_leggermente_sorridente: */
 const imageContainer = document.getElementById('image-container');
 const prev = document.getElementById('prev')
 const next = document.getElementById('next')
+const thumbnailsContainer = document.getElementById('thumbnails'); //Bonus 2
 
 //Creo un array contenente i nomi delle immagini
 const images = [
@@ -47,16 +44,50 @@ for (let i = 0; i < images.length; i++) {
     }
 
     imageContainer.appendChild(img);
+
+    // Creazione delle miniature
+    const thumbnail = document.createElement('img');
+    thumbnail.src = images[i];
+    thumbnail.alt = "Thumbnail " + (i + 1);
+    if (i === 0) {
+        thumbnail.classList.add('active-thumbnail');
+    }
+
+    // Aggiungo un evento click alle miniature
+    thumbnail.addEventListener('click', function () {
+
+        // Nascondo l'immagine attiva e rimuovo la classe attiva dalla miniatura
+        const imgs = document.querySelectorAll('#image-container img');
+        imgs[currentIndex].classList.remove('d-block');
+        imgs[currentIndex].classList.add('d-none');
+
+        const thumbs = document.querySelectorAll('#thumbnails img');
+        thumbs[currentIndex].classList.remove('active-thumbnail');
+
+        // Aggiorno l'indice corrente
+        currentIndex = i;
+
+        // Mostro l'immagine cliccata e evidenzio la miniatura
+        imgs[currentIndex].classList.remove('d-none');
+        imgs[currentIndex].classList.add('d-block');
+        thumbs[currentIndex].classList.add('active-thumbnail');
+    });
+
+    thumbnailsContainer.appendChild(thumbnail);
+
 }
 
-var imgs = document.querySelectorAll('#image-container img');
+
+const imgs = document.querySelectorAll('#image-container img');
+const thumbs = document.querySelectorAll('#thumbnails img');
 
 // Listener per il tasto "next"
 next.addEventListener('click', function () {
 
-    // Nascondo l'immagine attuale
+    // Nascondo l'immagine attuale e disattivo la miniatura
     imgs[currentIndex].classList.remove('d-block');
     imgs[currentIndex].classList.add('d-none');
+    thumbs[currentIndex].classList.remove('active-thumbnail');
 
     // Incremento l'indice
     currentIndex++;
@@ -66,17 +97,19 @@ next.addEventListener('click', function () {
         currentIndex = 0;
     }
 
-    // Mostro la nuova immagine
+    // Mostro la nuova immagine e attivo la miniatura
     imgs[currentIndex].classList.remove('d-none');
     imgs[currentIndex].classList.add('d-block');
+    thumbs[currentIndex].classList.add('active-thumbnail');
 });
 
 // Listener per il tasto "prev"
 prev.addEventListener('click', function () {
 
-    // Nascondo l'immagine attuale
+    // Nascondo l'immagine attuale e disattivo la miniatura
     imgs[currentIndex].classList.remove('d-block');
     imgs[currentIndex].classList.add('d-none');
+    thumbs[currentIndex].classList.remove('active-thumbnail');
 
     // Decremento l'indice
     currentIndex--;
@@ -86,9 +119,10 @@ prev.addEventListener('click', function () {
         currentIndex = images.length - 1;
     }
 
-    // Mostro la nuova immagine
+    // Mostro la nuova immagine e attivo la miniatura
     imgs[currentIndex].classList.remove('d-none');
     imgs[currentIndex].classList.add('d-block');
+    thumbs[currentIndex].classList.add('active-thumbnail');
 });
 
 
